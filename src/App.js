@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import Home from './compoments/Home';
+import Login from './compoments/Login';
+import LoginService from './services/loginService';
 
 function App() {
+
+  const [logged, setLogged] = useState(false);
+  const [email, setEmail] = useState('');
+
+  function login(values) {
+    new LoginService().login(values).then(res => {
+      console.log(res);
+      setEmail(values.email);
+      setLogged(true);
+    })
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    {logged ? <Home email={email} />: <Login onLogin={login} /> }
+    </>
   );
 }
 
